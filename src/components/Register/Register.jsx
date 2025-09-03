@@ -1,10 +1,25 @@
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
+import { auth } from '../../firebase.init';
 
 const Register = () => {
 
     const handleRegister = (event) => {
         event.preventDefault();
-        console.log(event.target.email.value);
+        const email = event.target.email.value;
+        console.log(email);
+
+        const password = event.target.password.value;
+        console.log(password);
+
+        // creating user with email and password
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(result => {
+                console.log(result.user);
+            })
+            .catch(error => {
+                console.log("Error", error);
+            })
     }
 
     return (
@@ -44,6 +59,7 @@ const Register = () => {
                     </svg>
                     <input
                         type="password"
+                        name='password'
                         required
                         placeholder="Password"
                         minlength="8"

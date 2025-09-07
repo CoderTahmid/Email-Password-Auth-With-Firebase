@@ -12,6 +12,11 @@ const SignUp = () => {
         const password = e.target.password.value;
         setErrorMessage('');
 
+        if (password.length < 6) {
+            setErrorMessage('Password should be 6 character of longer');
+            return;
+        }
+
         createUserWithEmailAndPassword(auth, email, password)
             .then(result  => {
                 console.log(result.user);

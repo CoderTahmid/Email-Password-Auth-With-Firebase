@@ -4,13 +4,16 @@ import { useState } from "react";
 
 const SignUp = () => {
 
+    const[success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleSingUp = e => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
+
         setErrorMessage('');
+        setSuccess(false);
 
         if (password.length < 6) {
             setErrorMessage('Password should be 6 character of longer');
@@ -20,10 +23,12 @@ const SignUp = () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then(result  => {
                 console.log(result.user);
+                setSuccess(true);
             })
             .catch(err => {
                 console.log("Error", err);
                 setErrorMessage(err.message);
+                setSuccess(false);
             })
     }
 
@@ -42,6 +47,9 @@ const SignUp = () => {
             </form>
             {
                 errorMessage && <p className="text-red-600">{errorMessage}</p>
+            }
+            {
+                success && <p className="text-green-500">Sign up is successful.</p>
             }
         </div>
     );

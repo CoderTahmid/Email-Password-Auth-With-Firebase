@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const SignUp = () => {
 
-    const[success, setSuccess] = useState(false);
+    const [success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleSingUp = e => {
@@ -20,8 +20,28 @@ const SignUp = () => {
             return;
         }
 
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+        /*
+        here
+        (?=.*[a-z]) --> at least one lowercase
+        (?=.*[A-Z]) --> at least one uppercase
+        (?=.*\d) --> at least one digit
+        (?=.*[@$!%*?&]) --> at least one special digit
+        [A-Za-z\d@$!%*?&]{8,} --> Only allows letters, numbers, and allowed special chars, with a minimum length of 8
+        */
+
+        if (!passwordRegex.test(password)) {
+            /*
+            amra jante chacchi je password'r moddhe oi character gula ache kina
+            jodi na thake tahole ei if block ta execute hbe
+            */
+            setErrorMessage('At least one uppercase, one lowercase, one number, one special character need for you password');
+            return;
+
+        }
+
         createUserWithEmailAndPassword(auth, email, password)
-            .then(result  => {
+            .then(result => {
                 console.log(result.user);
                 setSuccess(true);
             })

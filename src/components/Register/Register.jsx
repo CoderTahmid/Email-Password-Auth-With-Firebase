@@ -71,7 +71,7 @@ const Register = () => {
                     Must be more than 8 characters, including
                     <br />At least one number <br />At least one lowercase letter <br />At least one uppercase letter
                 </p>
-                <button className="btn btn-wide">Wide</button>
+                <button className="btn btn-wide">Sign up</button>
             </form>
         </div>
     );

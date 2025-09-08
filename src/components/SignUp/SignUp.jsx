@@ -13,9 +13,15 @@ const SignUp = () => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const terms = e.target.terms.checked;
 
         setErrorMessage('');
         setSuccess(false);
+
+        if (!terms) {
+            setErrorMessage('Please accept our terms and conditions');
+            return;
+        }
 
         if (password.length < 6) {
             setErrorMessage('Password should be 6 character of longer');
@@ -65,6 +71,12 @@ const SignUp = () => {
                     <input type={showPassword ? 'text' : 'password'} className="input" placeholder="Password" name='password' />
                     <button onClick={() => setShowPassword(!showPassword)} className="btn btn-xs absolute right-6 top-26">{showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}</button>
                     <div><a className="link link-hover">Forgot password?</a></div>
+                    <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-64 border p-4">
+                        <label className="label">
+                            <input type="checkbox" name="terms" className="checkbox" />
+                            Accept terms and condition
+                        </label>
+                    </fieldset>
                     <button className="btn btn-neutral mt-4">Sign up</button>
                 </fieldset>
             </form>

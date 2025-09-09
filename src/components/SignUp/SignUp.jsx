@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase.init";
 import { useState } from "react";
 import { FaEye, FaEyeDropper, FaEyeSlash } from "react-icons/fa";
@@ -15,6 +15,8 @@ const SignUp = () => {
         const email = e.target.email.value;
         const password = e.target.password.value;
         const terms = e.target.terms.checked;
+        const name = e.target.name.value;
+        const photo = e.target.photo.value;
 
         setErrorMessage('');
         setSuccess(false);
@@ -54,10 +56,26 @@ const SignUp = () => {
                 console.log(result.user);
                 setSuccess(true);
 
+                //Send verification email
                 sendEmailVerification(auth.currentUser)
                     .then(() => {
                         console.log("Verification email sent");
                     })
+
+                // update profile name and photo URL
+                const profile = {
+                    displayName: name,
+                    photoURL: photo
+                }
+
+                updateProfile(auth.currentUser, profile)
+                    .then(() => {
+                        console.log("User profile updated");
+                    })
+                    .catch(error => {
+                        console.log("User profile update error", error);
+                    })
+
             })
             .catch(err => {
                 console.log("Error", err);
@@ -71,10 +89,18 @@ const SignUp = () => {
             <h1 className="text-5xl font-bold">Sign up now!</h1>
             <form onSubmit={handleSingUp} className="card-body">
                 <fieldset className="fieldset relative">
+                    <label className="label">Name</label>
+                    <input type="text" className="input" placeholder="name" name='name' />
+
+                    <label className="label">Photo URL</label>
+                    <input type="text" className="input" placeholder="photo URL" name='photo' />
+
                     <label className="label">Email</label>
                     <input type="email" className="input" placeholder="Email" name='email' />
+
                     <label className="label">Password</label>
                     <input type={showPassword ? 'text' : 'password'} className="input" placeholder="Password" name='password' />
+
                     <button onClick={() => setShowPassword(!showPassword)} className="btn btn-xs absolute right-6 top-26">{showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}</button>
                     <div><a className="link link-hover">Forgot password?</a></div>
                     <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-64 border p-4">

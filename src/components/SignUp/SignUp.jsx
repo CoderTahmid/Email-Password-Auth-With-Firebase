@@ -1,7 +1,8 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "../../firebase.init";
 import { useState } from "react";
 import { FaEye, FaEyeDropper, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
 
@@ -35,10 +36,10 @@ const SignUp = () => {
         (?=.*[A-Z]) --> at least one uppercase
         (?=.*\d) --> at least one digit
         (?=.*[@$!%*?&]) --> at least one special digit
-        [A-Za-z\d@$!%*?&]{8,} --> Only allows letters, numbers, and allowed special chars, with a minimum length of 8
+        [A-Za-z\d@$!%*?&]{6,} --> Only allows letters, numbers, and allowed special chars, with a minimum length of 6
         */
 
-        if (!passwordRegex.test(password)) {
+        if (passwordRegex.test(password)) {
             /*
             amra jante chacchi je password'r moddhe oi character gula ache kina
             jodi na thake tahole ei if block ta execute hbe
@@ -52,6 +53,11 @@ const SignUp = () => {
             .then(result => {
                 console.log(result.user);
                 setSuccess(true);
+
+                sendEmailVerification(auth.currentUser)
+                    .then(() => {
+                        console.log("Verification email sent");
+                    })
             })
             .catch(err => {
                 console.log("Error", err);
@@ -86,6 +92,7 @@ const SignUp = () => {
             {
                 success && <p className="text-green-500">Sign up is successful.</p>
             }
+            <p className="m-2">Already have an account? please <Link to='/login'>Login</Link></p>
         </div>
     );
 };

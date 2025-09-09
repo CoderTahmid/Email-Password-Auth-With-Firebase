@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRef, useState } from 'react';
 import { auth } from '../../firebase.init';
 import { Link } from 'react-router-dom';
@@ -39,6 +39,16 @@ const Login = () => {
         /*
         ekhane amra email e ref={emailRef} eita pathanor maaddhome email field'r value get korte partasi
         */
+        const email = emailRef.current.value;
+
+        if(!email) {
+            console.log("Please provide a valid email address");
+        } else {
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    alert("Password Reset email has been sent, please check your email");
+                })
+        }
     }
 
     return (

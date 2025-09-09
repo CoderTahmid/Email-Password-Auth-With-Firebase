@@ -1,5 +1,5 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { auth } from '../../firebase.init';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ const Login = () => {
 
     const [success, setSuccess] = useState(false);
     const [loginError, setLoginError] = useState('');
+    const emailRef = useRef();
 
     const handleLogin = e => {
         e.preventDefault();
@@ -34,7 +35,10 @@ const Login = () => {
     }
 
     const handleForgetPassword = () => {
-        
+        console.log("get me email address ", emailRef.current.value); // output: [email address]
+        /*
+        ekhane amra email e ref={emailRef} eita pathanor maaddhome email field'r value get korte partasi
+        */
     }
 
     return (
@@ -51,7 +55,7 @@ const Login = () => {
                     <form onSubmit={handleLogin} className="card-body">
                         <fieldset className="fieldset">
                             <label className="label">Email</label>
-                            <input type="email" name='email' className="input" placeholder="Email" />
+                            <input ref={emailRef} type="email" name='email' className="input" placeholder="Email" required />
                             <label className="label">Password</label>
                             <input type="password" name='password' className="input" placeholder="Password" />
                             <div onClick={handleForgetPassword}><a className="link link-hover">Forgot password?</a></div>
